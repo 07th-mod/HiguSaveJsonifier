@@ -159,7 +159,9 @@ namespace HiguSaveConverter {
 			writer.WritePropertyName("Layers");
 			writer.WriteStartObject();
 			for (int i = 0; i < 64; i++) {
-				NamedObjectToJSON(OptionalToJSON(LayerToJSON(gameVersion)), writer, reader, i.ToString());
+				if (reader.ReadBoolean()) {
+					NamedObjectToJSON(LayerToJSON(gameVersion), writer, reader, i.ToString());
+				}
 			}
 			writer.WriteEndObject();
 
@@ -212,8 +214,6 @@ namespace HiguSaveConverter {
 						NamedObjectToJSON(StackEntryToJSON, writer, reader, "CurrentScript");
 						MemoryToJSON(writer, input);
 						CurrentAudioToJSON(writer, input);
-						//writer.WritePropertyName("Rest");
-						//writer.WriteValue(reader.ReadBytes((int)reader.BaseStream.Length));
 						SceneToJSON(writer, input, gameVersion);
 					}
 				}
