@@ -227,10 +227,22 @@ namespace HiguSaveConverter {
 		{
 			if (args.Length < 2) {
 				Console.Error.WriteLine("Please supply the game version as a number (1 for Onikakushi, 5 for Meakashi, etc) and the save file as arguments");
+				Console.Error.WriteLine("Or if extracting a global.dat, put 'global' instead of the number (like `dotnet run global global.dat`)");
 				return;
 			}
+
+			string path = args[1];
+
+			// global.dat processing
+			if(args[0].ToLower() == "global")
+			{
+				Console.WriteLine(GlobalDataExtractor.ExtractAsFormattedJSON(path));
+				return;
+			}
+
+			// normal save file processing
 			int gameVersion = Int32.Parse(args[0]);
-			string save = SaveFileToJSON(args[1], gameVersion);
+			string save = SaveFileToJSON(path, gameVersion);
 			Console.WriteLine(save);
 		}
 	}
